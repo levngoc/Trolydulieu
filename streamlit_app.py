@@ -31,6 +31,7 @@ client = OpenAI(api_key=openai_api_key)
 # Khởi tạo tin nhắn "system" và "assistant"
 INITIAL_SYSTEM_MESSAGE = {"role": "system", "content": rfile("01.system_trainning.txt")}
 INITIAL_ASSISTANT_MESSAGE = {"role": "assistant", "content": rfile("02.assistant.txt")}
+CHATGPT_MODEL = rfile("module_chatgpt.txt").strip()
 
 # Kiểm tra nếu chưa có session lưu trữ thì khởi tạo tin nhắn ban đầu
 if "messages" not in st.session_state:
@@ -77,7 +78,7 @@ if prompt := st.chat_input("Bạn nhập nội dung cần trao đổi ở đây 
     # Tạo phản hồi từ API OpenAI
     response = ""
     stream = client.chat.completions.create(
-        model=rfile("module_chatgpt.txt").strip(),
+        model=CHATGPT_MODEL,
         messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
         stream=True,
     )
